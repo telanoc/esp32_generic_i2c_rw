@@ -40,26 +40,6 @@
 
 Adafruit_MCP23017 mcp;
 
-/**
- * @brief i2c master initialization
- */
-//void i2c_master_init()
-//{
-//    i2c_port_t i2c_master_port = I2C_NUM_0;
-//    i2c_config_t conf;
-//
-//    conf.mode = I2C_MODE_MASTER;
-//    conf.sda_io_num = (gpio_num_t)I2C_MASTER_SDA_IO;
-//    conf.sda_pullup_en = GPIO_PULLUP_ENABLE;
-//    conf.scl_io_num = (gpio_num_t)I2C_MASTER_SCL_IO;
-//    conf.scl_pullup_en = GPIO_PULLUP_ENABLE;
-//    conf.master.clk_speed = I2C_MASTER_FREQ_HZ;
-//    i2c_param_config(i2c_master_port, &conf);
-//    if (ESP_FAIL == i2c_driver_install(i2c_master_port, conf.mode, 0, 0, 0)) {
-//        printf("Error installing driver\n");
-//    }
-//}
-
 
 void set_directions (int a)
 {

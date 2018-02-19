@@ -37,3 +37,4 @@ Check out Neil's ESP-32 snippets at https://github.com/nkolban, and also his
 Youtube channel at https://www.youtube.com/channel/UChKn_BlaVrMrhEquPNI6HuQ
 which has lots of informative ESP8266 and ESP32 videos.
 
+Also: Thanks to Antonio Fiol for finding bugs and reporting them.

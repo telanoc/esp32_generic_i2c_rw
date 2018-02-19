@@ -27,8 +27,6 @@
 
 #define ACK_CHECK_EN   (1)   /* I2C master will check ack from slave */
 #define ACK_CHECK_DIS  (0)   /* I2C master will not check ack from slave */
-#define ACK_VAL        (0)   /* I2C ack value */
-#define NACK_VAL       (1)   /* I2C nack value */
 
 
 /**
