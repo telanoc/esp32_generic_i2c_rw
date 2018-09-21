@@ -24,14 +24,11 @@
 // lines.
 #define GENERIC_I2C_USE_PULLUPS
 
-i2c_port_t i2c_master_port = I2C_NUM_0;
-
 /**
  * i2c master initialization
  */
 esp_err_t generic_i2c_master_init(int portnum, int sclpin, int sdapin, int i2c_frequency)
 {
-    i2c_master_port = (i2c_port_t)portnum;
     i2c_config_t conf;
 
     conf.mode = I2C_MODE_MASTER;
@@ -46,16 +43,16 @@ esp_err_t generic_i2c_master_init(int portnum, int sclpin, int sdapin, int i2c_f
 
     conf.master.clk_speed = i2c_frequency;
     
-	i2c_param_config(i2c_master_port, &conf);
-    
-	return i2c_driver_install(i2c_master_port, conf.mode, 0, 0, 0);
+	i2c_param_config((i2c_port_t)portnum, &conf);
+
+	return i2c_driver_install((i2c_port_t)portnum, conf.mode, 0, 0, 0);
 }
 
 
 /**
  * Read a register value from an i2c device
  */
-uint8_t generic_read_i2c_register(uint8_t hwaddr, uint8_t regaddr)
+uint8_t generic_read_i2c_register(uint8_t hwaddr, uint8_t regaddr, uint8_t portnum)
 {
     uint8_t retval;
 
@@ -64,7 +61,7 @@ uint8_t generic_read_i2c_register(uint8_t hwaddr, uint8_t regaddr)
     i2c_master_write_byte(cmd, (hwaddr << 1) | I2C_MASTER_WRITE, ACK_CHECK_EN);
     i2c_master_write_byte(cmd, regaddr, I2C_MASTER_LAST_NACK);
     i2c_master_stop(cmd);
-    i2c_master_cmd_begin(i2c_master_port, cmd, BEGIN_TIMEOUT);
+    i2c_master_cmd_begin((i2c_port_t)portnum, cmd, BEGIN_TIMEOUT);
     i2c_cmd_link_delete(cmd);
 
     cmd = i2c_cmd_link_create();
@@ -72,7 +69,7 @@ uint8_t generic_read_i2c_register(uint8_t hwaddr, uint8_t regaddr)
     i2c_master_write_byte(cmd, (hwaddr << 1) | I2C_MASTER_READ, ACK_CHECK_EN);
     i2c_master_read_byte(cmd, &retval, I2C_MASTER_LAST_NACK);
     i2c_master_stop(cmd);
-    i2c_master_cmd_begin(i2c_master_port, cmd, BEGIN_TIMEOUT);
+    i2c_master_cmd_begin((i2c_port_t)portnum, cmd, BEGIN_TIMEOUT);
     i2c_cmd_link_delete(cmd);
     return retval;
 }
@@ -81,7 +78,7 @@ uint8_t generic_read_i2c_register(uint8_t hwaddr, uint8_t regaddr)
 /**
  * Read a register value from an i2c device
  */
-uint16_t generic_read_i2c_register_word(uint8_t hwaddr, uint8_t regaddr)
+uint16_t generic_read_i2c_register_word(uint8_t hwaddr, uint8_t regaddr, uint8_t portnum)
 {
     uint16_t res = 0;
     uint8_t res2 = 0;
@@ -91,7 +88,7 @@ uint16_t generic_read_i2c_register_word(uint8_t hwaddr, uint8_t regaddr)
     i2c_master_write_byte(cmd, (hwaddr << 1) | I2C_MASTER_WRITE, ACK_CHECK_EN);
     i2c_master_write_byte(cmd, regaddr, ACK_CHECK_EN);
     i2c_master_stop(cmd);
-    i2c_master_cmd_begin(i2c_master_port, cmd, BEGIN_TIMEOUT);
+    i2c_master_cmd_begin((i2c_port_t)portnum, cmd, BEGIN_TIMEOUT);
     i2c_cmd_link_delete(cmd);
 
     cmd = i2c_cmd_link_create();
@@ -100,7 +97,7 @@ uint16_t generic_read_i2c_register_word(uint8_t hwaddr, uint8_t regaddr)
     i2c_master_read_byte(cmd, &res2, I2C_MASTER_ACK);
     i2c_master_read_byte(cmd, (uint8_t *)&res, I2C_MASTER_LAST_NACK);
     i2c_master_stop(cmd);
-    i2c_master_cmd_begin(i2c_master_port, cmd, BEGIN_TIMEOUT);
+    i2c_master_cmd_begin((i2c_port_t)portnum, cmd, BEGIN_TIMEOUT);
     i2c_cmd_link_delete(cmd);
 
     return (res << 8) | res2;
@@ -110,7 +107,7 @@ uint16_t generic_read_i2c_register_word(uint8_t hwaddr, uint8_t regaddr)
 /**
  * Write an 8 bit value to an i2c device
  */
-void generic_write_i2c_register(uint8_t hwaddr, uint8_t regaddr, uint8_t value)
+void generic_write_i2c_register(uint8_t hwaddr, uint8_t regaddr, uint8_t value, uint8_t portnum)
 {
     i2c_cmd_handle_t cmd = i2c_cmd_link_create();
     i2c_master_start(cmd);
@@ -118,7 +115,7 @@ void generic_write_i2c_register(uint8_t hwaddr, uint8_t regaddr, uint8_t value)
     i2c_master_write_byte(cmd, regaddr, ACK_CHECK_EN);
     i2c_master_write_byte(cmd, value, I2C_MASTER_LAST_NACK);
     i2c_master_stop(cmd);
-    i2c_master_cmd_begin(i2c_master_port, cmd, BEGIN_TIMEOUT);
+    i2c_master_cmd_begin((i2c_port_t)portnum, cmd, BEGIN_TIMEOUT);
     i2c_cmd_link_delete(cmd);
 }
 
@@ -126,7 +123,7 @@ void generic_write_i2c_register(uint8_t hwaddr, uint8_t regaddr, uint8_t value)
 /**
  * Write a 16 bit value to an i2c device
  */
-void generic_write_i2c_register_word(uint8_t hwaddr, uint8_t regaddr, uint16_t value)
+void generic_write_i2c_register_word(uint8_t hwaddr, uint8_t regaddr, uint16_t value, uint8_t portnum)
 {
     i2c_cmd_handle_t cmd = i2c_cmd_link_create();
     i2c_master_start(cmd);
@@ -135,7 +132,7 @@ void generic_write_i2c_register_word(uint8_t hwaddr, uint8_t regaddr, uint16_t v
     i2c_master_write_byte(cmd, value & 0xff, I2C_MASTER_ACK);
     i2c_master_write_byte(cmd, value >> 8, I2C_MASTER_LAST_NACK);
     i2c_master_stop(cmd);
-    i2c_master_cmd_begin(i2c_master_port, cmd, BEGIN_TIMEOUT);
+    i2c_master_cmd_begin((i2c_port_t)portnum, cmd, BEGIN_TIMEOUT);
     i2c_cmd_link_delete(cmd);
 }
 

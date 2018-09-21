@@ -72,28 +72,28 @@ uint8_t Adafruit_MCP23017::regForPin(uint8_t pin, uint8_t portAaddr, uint8_t por
  * Read a 16 bit register value
  */
 uint16_t Adafruit_MCP23017::readRegisterWord(uint8_t addr) {
-	return generic_read_i2c_register_word (MCP23017_ADDRESS | i2caddr, addr);
+	return generic_read_i2c_register_word (MCP23017_ADDRESS | i2caddr, addr, i2c_port);
 }
 
 /**
  * Write a 16 bit register value
  */
 void Adafruit_MCP23017::writeRegisterWord(uint8_t addr, uint16_t value) {
-	generic_write_i2c_register_word (MCP23017_ADDRESS | i2caddr, addr, value);
+	generic_write_i2c_register_word (MCP23017_ADDRESS | i2caddr, addr, value, i2c_port);
 }
 
 /**
  * Reads a given register
  */
 uint8_t Adafruit_MCP23017::readRegister(uint8_t addr){
-	return generic_read_i2c_register (MCP23017_ADDRESS | i2caddr, addr);
+	return generic_read_i2c_register (MCP23017_ADDRESS | i2caddr, addr, i2c_port);
 }
 
 /**
  * Writes a given register
  */
 void Adafruit_MCP23017::writeRegister(uint8_t regAddr, uint8_t regValue){
-	generic_write_i2c_register (MCP23017_ADDRESS | i2caddr, regAddr, regValue);
+	generic_write_i2c_register (MCP23017_ADDRESS | i2caddr, regAddr, regValue, i2c_port);
 }
 
 
@@ -126,8 +126,9 @@ void Adafruit_MCP23017::updateRegisterBit(uint8_t pin, uint8_t pValue, uint8_t p
  * the user sends in the logical address, they don't get unexpected results.
  *
  */
-void Adafruit_MCP23017::begin(uint8_t addr) {
+void Adafruit_MCP23017::begin(uint8_t addr, uint8_t i2cport) {
 
+	i2c_port = i2cport;
     i2caddr = addr & 7;
 
     //Wire.begin();

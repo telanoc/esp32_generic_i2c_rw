@@ -22,7 +22,7 @@
 
 class Adafruit_MCP23017 {
 public:
-  void begin(uint8_t addr);
+  void begin(uint8_t addr, uint8_t i2cport = 0);
   void begin(void);
 
   void pinMode(uint8_t p, uint8_t d);
@@ -48,6 +48,7 @@ public:
   void writeRegisterWord(uint8_t addr, uint16_t value);
 
  private:
+  uint8_t i2c_port;
   uint8_t i2caddr;
 
   uint8_t bitForPin(uint8_t pin);
