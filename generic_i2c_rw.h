@@ -49,11 +49,12 @@ esp_err_t generic_i2c_master_init(int portnum, int sclpin, int sdapin, int i2c_f
  *
  * @param hwaddr - Device address  e.g. 0x20 for an MCP23017
  * @param regaddr - Register to read from
+ * @param portnum - i2c port number (0 or 1), 0 by default
  *
  * @return
  *     Value read from i2c device register
  */
-uint8_t generic_read_i2c_register(uint8_t hwaddr, uint8_t regaddr);
+uint8_t generic_read_i2c_register(uint8_t hwaddr, uint8_t regaddr, uint8_t portnum = 0);
 
 
 /**
@@ -61,11 +62,12 @@ uint8_t generic_read_i2c_register(uint8_t hwaddr, uint8_t regaddr);
  *
  * @param hwaddr - Device address  e.g. 0x20 for an MCP23017
  * @param regaddr - Register to read from
+ * @param portnum - i2c port number (0 or 1), 0 by default
  *
  * @return
  *     Value read from i2c device register
  */
-uint16_t generic_read_i2c_register_word(uint8_t hwaddr, uint8_t regaddr);
+uint16_t generic_read_i2c_register_word(uint8_t hwaddr, uint8_t regaddr, uint8_t portnum = 0);
 
 
 /**
@@ -74,11 +76,12 @@ uint16_t generic_read_i2c_register_word(uint8_t hwaddr, uint8_t regaddr);
  * @param hwaddr - Device address  e.g. 0x20 for an MCP23017
  * @param regaddr - Register to write to
  * @param value - The data to write
+ * @param portnum - i2c port number (0 or 1), 0 by default
  *
  * @return
  *     n/a
  */
-void generic_write_i2c_register(uint8_t hwaddr, uint8_t regaddr, uint8_t value);
+void generic_write_i2c_register(uint8_t hwaddr, uint8_t regaddr, uint8_t value, uint8_t portnum = 0);
 
 
 /**
@@ -87,11 +90,12 @@ void generic_write_i2c_register(uint8_t hwaddr, uint8_t regaddr, uint8_t value);
  * @param hwaddr - Device address  e.g. 0x20 for an MCP23017
  * @param regaddr - Register to write to
  * @param value - The data to write
+ * @param portnum - i2c port number (0 or 1), 0 by default
  *
  * @return
  *     n/a
  */
-void generic_write_i2c_register_word(uint8_t hwaddr, uint8_t regaddr, uint16_t value);
+void generic_write_i2c_register_word(uint8_t hwaddr, uint8_t regaddr, uint16_t value, uint8_t portnum = 0);
 
 
 #endif /* _GENERIC_I2C_RW_H_ */
